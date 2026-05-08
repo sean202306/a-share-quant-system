@@ -1,0 +1,39 @@
+# Prod Environment Docker Compose (Ubuntu with native NVIDIA GPU support)
+version: '3.8'
+
+services:
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile.prod
+    container_name: a-share-quant-prod
+    environment:
+      - ENV=prod
+      - DEBUG=false
+      - PYTHONUNBUFFERED=1
+      - NVIDIA_VISIBLE_DEVICES=all
+      - NVIDIA_DRIVER_CAPABILITIES=compute,utility
+    volumes:
+      - .:/workspace
+      - data:/workspace/data
+      - logs:/workspace/logs
+    ports:
+      - "8501:8501"  # Streamlit port
+      - "8000:8000"  # LLM API port
+    working_dir: /workspace
+    command: python -m src.data.pipeline
+    # GPU support with native NVIDIA runtime
+    deploy:
+      resources:
+        reservations:
+          devices:
+            - driver: nvidia
+              count: all  # Use all available GPUs
+              capabilities: [gpu]
+      resources:
+        limits:
+          memory: 32G
+
+volumes:
+  data:
+  logs:

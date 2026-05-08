@@ -1,0 +1,36 @@
+# Dev Environment Docker Compose (macOS with WSL2 GPU support)
+version: '3.8'
+
+services:
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: a-share-quant-dev
+    environment:
+      - ENV=dev
+      - DEBUG=true
+      - PYTHONUNBUFFERED=1
+    volumes:
+      - .:/workspace
+      - data:/workspace/data
+      - logs:/workspace/logs
+    ports:
+      - "8501:8501"  # Streamlit port
+    working_dir: /workspace
+    command: bash
+    stdin_open: true
+    tty: true
+    # GPU support for macOS with Docker Desktop
+    # Note: Docker Desktop for Mac has limited GPU support
+    # deploy:
+    #   resources:
+    #     reservations:
+    #       devices:
+    #         - driver: nvidia
+    #           count: 1
+    #           capabilities: [gpu]
+
+volumes:
+  data:
+  logs:
