@@ -1,20 +1,21 @@
-# Core Dependencies
+# Update for Phase 3/4: LLM and Scheduling
 python-dotenv==1.0.0
 requests==2.31.0
 pandas==2.0.3
 numpy==1.24.3
 
 # Database
-# SQLite is built-in, no separate package needed
+# SQLite is built-in
 
 # Technical Analysis
 ta-lib==0.4.28
-# or alternatively:
-# pandas-ta==0.3.14b0
 
 # Frontend
 streamlit==1.28.0
 plotly==5.17.0
+
+# Scheduling
+APScheduler==3.10.4
 
 # Logging and Utils
 python-dateutil==2.8.2
